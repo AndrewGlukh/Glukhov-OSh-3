@@ -1,0 +1,157 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'myapp/stanis.css' %}">
+
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HW - HM</title>
+</head>
+<body style="font-family: Museo Sans Cyrl, Arial;" id="body">
+    <!-- Хэдер -->
+    <header class="header">
+        <a href="http://info.homeet.styleru.org/"><img src="{% static 'myapp/img/header image.png' %}" width="200" alt=""></a>
+        <!-- Кнопка "выйти из аккаунта" -->
+        <a href="http://info.homeet.styleru.org/"> <button class="button" id="exitbut">Выйти из аккаунта</button> </a>
+    </header>
+
+    <main style="margin-left: 100px; position: relative;">
+    
+    <form action="/admin/" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <div style="padding-top: 150px;">
+            <a href="http://info.homeet.styleru.org/"> <button class="button">На главную</button> </a>
+        </div>
+        <br>
+        <div>
+            <span style="font-size: 220%;">Создание профиля</span>
+            <span style="color: rgb(174, 174, 174);">/ О себе</span>
+        </div>
+        <br>
+
+        <!-- Линия прогресса -->
+        <div style="position: absolute; width:1105px; left:0px; height: 3px; border: solid 0px #d1d1d1; background-color:#d1d1d1;">
+            <span style="position: absolute; right:85%; left:0px; height: 2px; border: solid 1px rgb(78, 0, 101); background-color:rgb(78, 0, 101);"></span>
+        </div>
+        <br><br>
+        <section>
+            <!-- Ввод фото -->
+            <div class="photo-box">
+                <form method="post" enctype="multipart/form-data">
+                    <br><br>
+                    <div><b>Аватар профиля</b></div>
+                    <br>
+                    <label class="input-file">
+                            <input type="file" name="file" id="photo_input">
+                            <span class="input-file-btn">Загрузить</span>           
+                     </label>
+                     <br>
+                     <span class="input-file-text">Загрузите фотографию весом не более 10мб</span>
+                </form>
+            </div>
+            <br><br>
+            <!-- Все прочие вводы -->
+            <form action="">
+                <div id="Name_ref" style="position: relative;"><label for="Name" class="form-label">Имя и фамилия</label>
+                <input class="grey-form" type="text" name="Name" id="Name" placeholder="Иван Иванов"></div>
+
+                <div class="radio">
+                    <label style="margin-right: 5px;"><input type="radio" name="gender" id="Male_radio" value="Парень">Парень<span style="margin-left: 0.5px; margin-top: 0.5px; text-align: center;"> <span class="radio-select-dot"></span> </span></label>
+                    <label><input type="radio" name="gender" id="Female_radio" value="Девушка">Девушка<span style="text-align: center; margin-top: 0.5px;"> <span class="radio-select-dot"></span> </span></label>
+                </div>
+
+                <div id="Date_ref" style="position: relative;">
+                    <input type="text" class="grey-form" id="Birth_date_inp" placeholder="Дата рождения" onfocus="(this.type='date')">
+                    <span id="Calendar_icon"><img src="{% static 'myapp/img/calendar-icon.png' %}" alt="Календ" height="15px"></span>
+                </div> <br>
+
+                <div id="Teleg_ref" style="position: relative;"><input class="grey-form" type="text" id="telegram" placeholder="Телеграм"></div> <br>
+
+                <div id="Phone_ref" style="position: relative;"><label class="form-label" for="phone-num">Номер телефона</label>
+                    <input class="grey-form" type="tel" name="phone-num" id="phone-num" placeholder="+7...">
+                </div> <br>
+
+                <div id="O_sebe_ref" style="position: relative;"><label class="form-label" for="o-sebe">О себе</label>
+                    <textarea class="o-sebe-form" type="text" name="o-sebe" id="o-sebe" placeholder="О себе"></textarea>
+                </div>
+
+                <div style="font-size: 10; color: rgb(174, 174, 174);">Например: люблю хтмл</div>
+                
+            </form>
+        </section>
+        <!-- Окошки справа -->
+        <section style="position: absolute; left: 505px; top: 300px;">
+            <div style="font-size: 12; color: rgb(53, 53, 53);">Так будет выглядеть твоя будущая страница</div> <br>
+            <div class="account-preview">
+                <div style="height: 1px;"></div>
+
+                <div class="photo-preview"></div>
+
+                <button class="input-file-btn" style="margin: 21px; background-color:rgb(109, 0, 181, 0.5); border: 0px;">Показать контакты</button>
+
+                <div style="position:absolute; top:21px; left: 210px; font-size: 20;">
+
+                    <div id="Name_preview"><b>Иван Иванов</b></div>
+                    <div style="font-size: 12px; color:rgb(18, 18, 18); position: relative;">
+
+                        <span style="margin-right: 5px;" id="gender-preview">Пол</span><span class="dividor">oo</span>
+                        <span style="margin-right: 5px; margin-left: 8px;" id="age-preview">Возраст</span><span class="dividor">oo</span>
+                        <span style="margin-left: 8px;" id="kurs-preview">Курс</span></div>
+
+                        <div class="job-preview">Работа</div>
+
+                        <span id="extend_o_sebe_but">Развернуть <img src="{% static 'myapp/img/list-arrow.png' %}" class="Extend_arr"></span>
+                        <div class="o-sebe-preview">
+                            Мне очень нравится...
+                        </div>
+
+                        <div><img height="115" src="{% static 'myapp/img/right-windows.png' %}" alt="окошки" style="margin-left: -10px;"></div>
+                    </div>
+            </div> <br>
+
+            <!-- Второе окошко справа -->
+            <div class="account-preview" style="height:100px; position: relative;">
+                <div style="padding-top: 20px; padding-left: 10px;">
+                    <b>Мы совсем ничего о тебе не знаем</b>
+                    <div style="padding-top: 5px;">Рассажи о себе</div>
+                    <div>Люди пишут тем, кому доверяют. Тем более при поиске соседа</div>
+                    <div style="position: absolute; right:30px; top: 30px; height: 10px;"><img src="{% static 'myapp/img/sad-smile.png' %}" alt="sad" height="40px"></div>
+                </div>
+            </div>
+
+            <a href="{% url 'secondpage' %}"><button type="submit" class="input-file-btn" id="continue-butt">
+                Продолжить
+            </button></a>
+
+        </section>
+    </form>
+    </main>
+
+    <br><br><br><br><br><br><br><br><br>
+    <!-- Футер и линия у него -->
+    <div style="position: absolute; right:0px; left:0px; height: 0px; border-top: solid 1px #8a8a8a;"></div>
+    <footer class="footer">
+        <div style="color: rgb(109, 0, 181); font-size: 40px;">Support@homeet.com</div>
+        <div style="color: rgb(174, 174, 174);">Техническая поддержка</div>
+        <br>
+        <span>О сервисе</span><span style="margin-left: 20px;"></span>Контакты<span style="margin-left: 20px;">Политика конфиденциальности</span>
+        <a class="socset-box" href="https://telegram.org/?1&ysclid=lnrpeixor2513423268" style="position: absolute; left: 1120px;">
+            <img src="{% static 'myapp/img/tg-href.png' %}" width="35px" alt="tg" style="margin-top: 6px;"></a>
+        <a class="socset-box" href="https://vk.com/?ysclid=lnrpfguozw618824200" style="position: absolute; left:1170px;">
+            <img src="{% static 'myapp/img/vk-href.png' %}" width="35px" alt="vk" style="margin-top: 8px;"></a>
+        <br><br><br>
+        <div style="margin-top: 60px; height: 0px; width: 1100px; border-top: solid 1px #8a8a8a;;"></div>
+        <br><br><br>
+        <div style="color: rgb(174, 174, 174);">Предложение не является публичной офертой</div>
+        <div style="color: rgb(174, 174, 174);"><span>Сервис не несёт ответственности за действия пользователей, достоверность информации и т. д.</span>
+        <span style="position: absolute; left: 1085px;">Сделано в <b style="color: black;">бвср</b></span></div>
+        <div style="margin-top: 50px; background-color: rgb(109, 0, 181); position: absolute; left:0px; right:0px; height:20px;"></div>
+    </footer>
+    
+    <script src="{% static 'myapp/HW-script-1page.js' %}"></script>
+
+</body>
+</html>
