@@ -572,15 +572,13 @@ Phone_input.addEventListener("change", e=>{
 })
 
 continue_butt.addEventListener("click", but=>{
-    but.preventDefault();
-    if (Photo_chosen&&gender_chosen&&Name_correct&&Telegram_correct&&Phone_correct&&Date_correct&&(O_sebe_textbox.value!="")){
-        window.location.href = "secondpage";
-    }
-    else{
+
+    alert(1);
+    if(!(Photo_chosen&&gender_chosen&&Name_correct&&Telegram_correct&&Phone_correct&&Date_correct&&(O_sebe_textbox.value!=""))){
+        alert(2);
+        but.preventDefault();
         continue_butt.style.cssText="background-color: rgb(109, 0, 181, 0.5); transition: 0.3s;";
 
-        /* Окрашивание красным и добавление пометок о неправильности в случе неправильности 
-        MakeRed-ы по моему не сильно хорошо вышли в скрипте ко второй странице, этот скрипт сделал позже и так сложнее запутаться */
         if(Photo_chosen==false){
             Photo_ref.style.cssText="background-color:rgb(196, 126, 126, 0.5); border: dashed 3px red; transition:0.3s;";
             Under_photo_text.style.cssText="color:red; transition: 0.3s;";

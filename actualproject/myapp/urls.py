@@ -25,5 +25,6 @@ urlpatterns = [
     path('thirdpage', views.thirdpage, name="thirdpage"),
     path('thirdpage.html', views.thirdpage, name="thirdpage"),
     path('get_firstform', views.get_firstform, name="get_firstform"),
+    path('get_firstform_HTML', views.get_firstform_HTML, name='get_firstform_HTML'),
     path('acc_added', views.acc_added, name="acc_added"),
 ]

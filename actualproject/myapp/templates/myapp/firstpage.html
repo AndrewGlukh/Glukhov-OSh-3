@@ -19,9 +19,9 @@
 
     <main style="margin-left: 100px; position: relative;">
     
-    <form action="/admin/" method="post">
+    <form action="get_firstform_HTML" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form }}
+
         <div style="padding-top: 150px;">
             <a href="http://info.homeet.styleru.org/"> <button class="button">На главную</button> </a>
         </div>
@@ -40,7 +40,6 @@
         <section>
             <!-- Ввод фото -->
             <div class="photo-box">
-                <form method="post" enctype="multipart/form-data">
                     <br><br>
                     <div><b>Аватар профиля</b></div>
                     <br>
@@ -50,37 +49,33 @@
                      </label>
                      <br>
                      <span class="input-file-text">Загрузите фотографию весом не более 10мб</span>
-                </form>
             </div>
             <br><br>
             <!-- Все прочие вводы -->
-            <form action="">
-                <div id="Name_ref" style="position: relative;"><label for="Name" class="form-label">Имя и фамилия</label>
-                <input class="grey-form" type="text" name="Name" id="Name" placeholder="Иван Иванов"></div>
+            <div id="Name_ref" style="position: relative;"><label for="Name" class="form-label">Имя и фамилия</label>
+            <input class="grey-form" type="text" name="Name" id="Name" placeholder="Иван Иванов"></div>
 
-                <div class="radio">
-                    <label style="margin-right: 5px;"><input type="radio" name="gender" id="Male_radio" value="Парень">Парень<span style="margin-left: 0.5px; margin-top: 0.5px; text-align: center;"> <span class="radio-select-dot"></span> </span></label>
-                    <label><input type="radio" name="gender" id="Female_radio" value="Девушка">Девушка<span style="text-align: center; margin-top: 0.5px;"> <span class="radio-select-dot"></span> </span></label>
-                </div>
+            <div class="radio">
+                <label style="margin-right: 5px;"><input type="radio" name="gender" id="Male_radio" value="Парень">Парень<span style="margin-left: 0.5px; margin-top: 0.5px; text-align: center;"> <span class="radio-select-dot"></span> </span></label>
+                <label><input type="radio" name="gender" id="Female_radio" value="Девушка">Девушка<span style="text-align: center; margin-top: 0.5px;"> <span class="radio-select-dot"></span> </span></label>
+            </div>
 
-                <div id="Date_ref" style="position: relative;">
-                    <input type="text" class="grey-form" id="Birth_date_inp" placeholder="Дата рождения" onfocus="(this.type='date')">
-                    <span id="Calendar_icon"><img src="{% static 'myapp/img/calendar-icon.png' %}" alt="Календ" height="15px"></span>
-                </div> <br>
+            <div id="Date_ref" style="position: relative;">
+                <input type="text" class="grey-form" id="Birth_date_inp" name="Birth_date_inp" placeholder="Дата рождения" onfocus="(this.type='date')">
+                <span id="Calendar_icon"><img src="{% static 'myapp/img/calendar-icon.png' %}" alt="Календ" height="15px"></span>
+            </div> <br>
 
-                <div id="Teleg_ref" style="position: relative;"><input class="grey-form" type="text" id="telegram" placeholder="Телеграм"></div> <br>
+            <div id="Teleg_ref" style="position: relative;"><input class="grey-form" type="text" name="telegram" id="telegram" placeholder="Телеграм"></div> <br>
 
-                <div id="Phone_ref" style="position: relative;"><label class="form-label" for="phone-num">Номер телефона</label>
-                    <input class="grey-form" type="tel" name="phone-num" id="phone-num" placeholder="+7...">
-                </div> <br>
+            <div id="Phone_ref" style="position: relative;"><label class="form-label" for="phone-num">Номер телефона</label>
+                <input class="grey-form" type="tel" name="phone-num" id="phone-num" placeholder="+7...">
+            </div> <br>
 
-                <div id="O_sebe_ref" style="position: relative;"><label class="form-label" for="o-sebe">О себе</label>
-                    <textarea class="o-sebe-form" type="text" name="o-sebe" id="o-sebe" placeholder="О себе"></textarea>
-                </div>
+            <div id="O_sebe_ref" style="position: relative;"><label class="form-label" for="o-sebe">О себе</label>
+                <textarea class="o-sebe-form" type="text" name="o-sebe" id="o-sebe" placeholder="О себе"></textarea>
+            </div>
 
-                <div style="font-size: 10; color: rgb(174, 174, 174);">Например: люблю хтмл</div>
-                
-            </form>
+            <div style="font-size: 10; color: rgb(174, 174, 174);">Например: люблю хтмл</div>
         </section>
         <!-- Окошки справа -->
         <section style="position: absolute; left: 505px; top: 300px;">
@@ -122,10 +117,10 @@
                 </div>
             </div>
 
-            <a href="{% url 'secondpage' %}"><button type="submit" class="input-file-btn" id="continue-butt">
+            <!-- <a href="{% url 'secondpage' %}"><button type="submit" class="input-file-btn" id="continue-butt">
                 Продолжить
-            </button></a>
-
+            </button></a> -->
+            <input type="submit" value="Продолжить" class="input-file-btn" id="continue-butt">
         </section>
     </form>
     </main>
@@ -149,7 +144,7 @@
         <div style="color: rgb(174, 174, 174);"><span>Сервис не несёт ответственности за действия пользователей, достоверность информации и т. д.</span>
         <span style="position: absolute; left: 1085px;">Сделано в <b style="color: black;">бвср</b></span></div>
         <div style="margin-top: 50px; background-color: rgb(109, 0, 181); position: absolute; left:0px; right:0px; height:20px;"></div>
-    </footer>
+        </footer>
     
     <script src="{% static 'myapp/HW-script-1page.js' %}"></script>
 

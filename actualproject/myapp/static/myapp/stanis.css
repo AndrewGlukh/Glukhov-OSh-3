@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'Museo Sans Cyrl';
-    src: url("{% static 'myapp/fonts/MuseoSansCyrl300.otf' %}") format("opentype");
+    src: url("fonts/MuseoSansCyrl300.otf") format("opentype");
 }
 
 .header {

@@ -10,3 +10,4 @@ class FirstPageForm(forms.Form):
     telega = forms.CharField()
     phone_num = forms.CharField(max_length=12, min_length=12)
     O_sebe = forms.CharField()
+    

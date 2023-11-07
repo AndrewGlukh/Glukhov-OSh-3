@@ -4,7 +4,7 @@ from django.utils import timezone
 
 
 class User_Data_First(models.Model):
-    profile_pic = models.ImageField()
+    profile_pic = models.ImageField(upload_to="profile_pics/")
     your_name = models.CharField(max_length=100)
     gender=models.CharField(max_length=20)
     birth_date = models.DateField()
