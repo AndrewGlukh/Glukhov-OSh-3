@@ -45,9 +45,9 @@ def get_firstform_HTML(request):
             phone_num = phone_num,
             O_sebe = O_sebe)
         print(new_acc)
-        return HttpResponseRedirect("/myapp/acc_added")
+        return HttpResponseRedirect("/myapp/secondpage")
     else:
-        return HttpResponseRedirect("/myapp/index")
+        return HttpResponseRedirect("/myapp/testingform")
 
 def get_firstform(request):
     if request.method == "POST":

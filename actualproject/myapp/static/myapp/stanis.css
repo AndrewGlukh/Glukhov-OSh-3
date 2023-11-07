@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'Museo Sans Cyrl';
-    src: url("fonts/MuseoSansCyrl300.otf") format("opentype");
+    src: url("fonts/MuseoSansCyrl500.otf") format("opentype");
 }
 
 .header {
@@ -197,7 +197,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 #Calendar_icon{
     position:absolute;
-    left:215px;
+    left:195px;
     top:7px;
     height:fit-content;
     width:fit-content;
