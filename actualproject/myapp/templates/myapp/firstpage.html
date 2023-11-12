@@ -11,6 +11,7 @@
 </head>
 <body style="font-family: Museo Sans Cyrl, Arial;" id="body">
     <!-- Хэдер -->
+
     <header class="header">
         <a href="http://info.homeet.styleru.org/"><img src="{% static 'myapp/img/header image.png' %}" width="200" alt=""></a>
         <!-- Кнопка "выйти из аккаунта" -->
@@ -19,7 +20,7 @@
 
     <main style="margin-left: 100px; position: relative;">
     
-    <form action="get_firstform_HTML" method="post" enctype="multipart/form-data">
+    <form action="get_firstform_HTML" method="post" enctype="multipart/form-data" id="form1">
         {% csrf_token %}
 
         <div style="padding-top: 150px;">
@@ -44,7 +45,7 @@
                     <div><b>Аватар профиля</b></div>
                     <br>
                     <label class="input-file">
-                            <input type="file" name="file" id="photo_input">
+                            <input type="file" name="profile_pic" id="profile_pic">
                             <span class="input-file-btn">Загрузить</span>           
                      </label>
                      <br>
@@ -52,8 +53,8 @@
             </div>
             <br><br>
             <!-- Все прочие вводы -->
-            <div id="Name_ref" style="position: relative;"><label for="Name" class="form-label">Имя и фамилия</label>
-            <input class="grey-form" type="text" name="Name" id="Name" placeholder="Иван Иванов"></div>
+            <div id="Name_ref" style="position: relative;"><label for="your_name" class="form-label">Имя и фамилия</label>
+            <input class="grey-form" type="text" name="your_name" id="your_name" placeholder="Иван Иванов"></div>
 
             <div class="radio">
                 <label style="margin-right: 5px;"><input type="radio" name="gender" id="Male_radio" value="Парень">Парень<span style="margin-left: 0.5px; margin-top: 0.5px; text-align: center;"> <span class="radio-select-dot"></span> </span></label>
@@ -61,18 +62,18 @@
             </div>
 
             <div id="Date_ref" style="position: relative;">
-                <input type="text" class="grey-form" id="Birth_date_inp" name="Birth_date_inp" placeholder="Дата рождения" onfocus="(this.type='date')">
+                <input type="text" class="grey-form" id="Birth_date_inp" name="birth_date" placeholder="Дата рождения" onfocus="(this.type='date')">
                 <span id="Calendar_icon"><img src="{% static 'myapp/img/calendar-icon.png' %}" alt="Календ" height="15px"></span>
             </div> <br>
 
-            <div id="Teleg_ref" style="position: relative;"><input class="grey-form" type="text" name="telegram" id="telegram" placeholder="Телеграм"></div> <br>
+            <div id="Teleg_ref" style="position: relative;"><input class="grey-form" type="text" name="telega" id="telegram" placeholder="Телеграм"></div> <br>
 
-            <div id="Phone_ref" style="position: relative;"><label class="form-label" for="phone-num">Номер телефона</label>
-                <input class="grey-form" type="tel" name="phone-num" id="phone-num" placeholder="+7...">
+            <div id="Phone_ref" style="position: relative;"><label class="form-label" for="phone_num">Номер телефона</label>
+                <input class="grey-form" type="tel" name="phone_num" id="phone-num" placeholder="+7...">
             </div> <br>
 
-            <div id="O_sebe_ref" style="position: relative;"><label class="form-label" for="o-sebe">О себе</label>
-                <textarea class="o-sebe-form" type="text" name="o-sebe" id="o-sebe" placeholder="О себе"></textarea>
+            <div id="O_sebe_ref" style="position: relative;"><label class="form-label" for="O_sebe">О себе</label>
+                <textarea class="o-sebe-form" type="text" name="O_sebe" id="o-sebe" placeholder="О себе"></textarea>
             </div>
 
             <div style="font-size: 10; color: rgb(174, 174, 174);">Например: люблю хтмл</div>
@@ -117,11 +118,10 @@
                 </div>
             </div>
 
-            <!-- <a href="{% url 'secondpage' %}"><button type="submit" class="input-file-btn" id="continue-butt">
-                Продолжить
-            </button></a> -->
+
             <input type="submit" value="Продолжить" class="input-file-btn" id="continue-butt">
         </section>
+        
     </form>
     </main>
 

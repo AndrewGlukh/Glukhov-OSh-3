@@ -23,6 +23,7 @@ const Facult_arrow = document.querySelector("#Facult_arrow");
 const continue_butt = document.querySelector("#continue-butt");
 
 const Kurs_preview = document.querySelector("#kurs-preview");
+const Kurs_full = document.querySelector("#Kurs-full")
 const Job_preview = document.querySelector(".job-preview");
 
 let kurs_chosen = false;
@@ -30,7 +31,108 @@ let which_kurs = -1;
 let occup_chosen = false;
 let correct_Edu = ["Основное общее","Среднее общее","Среднее профессиональное","Бакалавриат","Магистратура"]; 
 let correct_Facult = ["ФКН", "ВШБ","ФП","ФД", "МИЭМ"];
-let correct_Prog = ["ИТСС","ИБ","ИВТ","ИБ","ПИ"];
+let correct_Prog = ["ИТСС","ИБ","ИВТ","ЭБ","ПИ"];
+
+/* Ввод данных с прошлой страницы в окошки */
+const account_preview = document.querySelector(".account-preview");
+const Extend_o_sebe_but = document.querySelector("#extend_o_sebe_but");
+const Extend_arrow = document.querySelector(".Extend_arr");
+const Photo_preview = document.querySelector(".photo-preview");
+const Name_preview = document.querySelector("#Name_preview");
+const Gender_preview = document.querySelector("#gender-preview");
+const Age_preview = document.querySelector("#age-preview");
+const O_sebe_preview = document.querySelector(".o-sebe-preview");
+let arrow_upside_down=false;
+const currentDate = new Date();
+
+function calculateAge (birthDate) {
+    birthDate = new Date(birthDate);
+    var years = (currentDate.getFullYear() - birthDate.getFullYear());
+    if (currentDate.getMonth() < birthDate.getMonth() ||
+        currentDate.getMonth() == birthDate.getMonth() && currentDate.getDate() < birthDate.getDate()) {
+        years--;
+    }
+    return years;
+}
+
+/* async function fetchBlob(url) {
+    const response = await fetch(url);
+    return response.blob();
+}
+const [imageSourceUrl, setImageSourceUrl] = useState("");
+const downloadImageAndSetSource = async (imageUrl) => {
+    image = await fetchBlob(imageUrl);
+    setImageSourceUrl(URL.createObjectURL(image));
+} */
+
+/* fetch('/myapp/api/users/')
+.then(response => response.blob())
+.then(blob=>{
+    alert(0);
+    alert(blob);
+    console.log(blob);
+    blob.slice()
+    const imageUrl = URL.createObjectURL(blob);
+    alert(imageUrl);
+    Photo_preview.style.cssText = "background:url(" + imageUrl + ") no-repeat;background-size: contain; background-position: center center; border:0px;";
+})
+.catch(error => {
+    console.error('Error:', error);
+}); */
+
+fetch('/myapp/api/users/')
+.then(response => response.json())
+.then(data => {
+    d=data.at(-1)
+    imageUrl=localStorage.getItem('picture');
+    Photo_preview.style.cssText = "background:url(" + imageUrl + ") no-repeat;background-size: contain; background-position: center center; border:0px;";
+    Name_preview.innerHTML=d.your_name;
+    Gender_preview.innerHTML=d.gender;
+    Age_preview.innerHTML=calculateAge(d.birth_date);
+    O_sebe_preview.innerHTML=d.O_sebe;
+})
+.catch(error => {
+    console.error('Error:', error);
+});
+
+function App() {
+    const fetchURL = '/myapp/api/users/';
+    const [imageSource, setImageSource] = useState('');
+  
+    useEffect(() => {
+      // Fetch the image as a blob
+      fetch(fetchURL)
+        .then(response => response.blob())
+        .then(imageBlob => {
+          // Create an object URL for the image blob
+          const imageUrl = URL.createObjectURL(imageBlob);
+          setImageSource(imageUrl);
+        });
+    }, [fetchURL]);
+    Photo_preview.style.cssText = "background:"+ imageSource +") no-repeat;background-size: contain; background-position: center center; border:0px;";
+  }
+
+
+/* "Развернуть" в превью аккаунта  */
+Extend_o_sebe_but.addEventListener("click", but =>{
+    if (arrow_upside_down){
+        O_sebe_preview.style.cssText="overflow: hidden;text-overflow: ellipsis;white-space: nowrap; transition:0.3s;";
+        Extend_arrow.style.cssText="rotate:0deg; transition:0.3s";
+        account_preview.style.height="fit-content";
+        arrow_upside_down=false;
+    }
+    else{
+        O_sebe_preview.style.cssText="max-height: 500px; height: fit-content; overflow: visible; text-overflow:clip; white-space: normal; transition:0.3s; word-wrap: break-word;";
+        Extend_arrow.style.cssText="rotate:180deg; transition:0.3s";
+        let acc_height= positionInfo = account_preview.getBoundingClientRect().height;
+        let sebe_height= positionInfo = O_sebe_preview.getBoundingClientRect().height;
+        if (sebe_height>30){
+            account_preview.style.height=acc_height+sebe_height-30+"px";
+        }
+        arrow_upside_down=true;
+    }
+})
+
 
 datalists.forEach(list => {
     list.style.display = "none";
@@ -394,25 +496,6 @@ function MakeRed_WrongInp(InputId, pos_ref){
     }
 }
 
-/* Преобразует Факультет Компьютерных Наук в ФКН и так далее */
-function Facult_long_to_short(fac){
-    if (fac=="Высшая Школа Бизнеса"){
-        return ВШБ
-    }
-    else if (fac=="Факультет Компьютерных Наук"){
-        return ФКН
-    }
-    else if (fac=="Факультет дизайна"){
-        return ФД
-    }
-    else if (fac=="Факультет Права"){
-        return ФП
-    }
-    else if (fac=="МИЭМ"){
-        return МИЭМ
-    }
-}
-
 /* Проверка и заполнение образования в превью */
 function Check_Education_Info_Fill_Preview(option_click_value){
     if (which_kurs==0){
@@ -437,10 +520,12 @@ function Check_Education_Info_Fill_Preview(option_click_value){
                 corr_Prog_flag=true;
             }
         })
+        console.log(kurs_chosen, corr_Edu_flag, corr_Facult_flag, corr_Prog_flag);
+
 
         /* Так как при нажатии в списке это запускается раньше обновления .value, прописаны исключения */
         if(kurs_chosen&&corr_Edu_flag&&corr_Facult_flag&&(option_click_value.parentNode.id=="Prog")){
-            education=which_kurs+" курс "+EduLevel.value+" "+Facult_long_to_short(Facult.value)+" "+option_click_value.value;
+            education=which_kurs+" курс "+EduLevel.value+" "+Facult.value+" "+option_click_value.value;
             Kurs_preview.innerHTML=education;
         }
         else if(kurs_chosen&&corr_Edu_flag&&corr_Prog_flag&&(option_click_value.parentNode.id=="Facult")){
@@ -448,22 +533,22 @@ function Check_Education_Info_Fill_Preview(option_click_value){
             Kurs_preview.innerHTML=education;
         }
         else if(kurs_chosen&&corr_Prog_flag&&corr_Facult_flag&&(option_click_value.parentNode.id=="EduLevel")){
-            education=which_kurs+" курс "+option_click_value.value+" "+Facult_long_to_short(Facult.value)+" "+Prog.value;
+            education=which_kurs+" курс "+option_click_value.value+" "+Facult.value+" "+Prog.value;
             Kurs_preview.innerHTML=education;
         }
         else if (kurs_chosen&&corr_Edu_flag&&corr_Facult_flag&&corr_Prog_flag){
-            education=which_kurs+" курс "+EduLevel.value+" "+Facult_long_to_short(Facult.value)+" "+Prog.value;
+            education=which_kurs+" курс "+EduLevel.value+" "+Facult.value+" "+Prog.value;
             Kurs_preview.innerHTML=education;
         }
         else{
             Kurs_preview.innerHTML="Недостаточно данных";
         }
     }
+    Kurs_full.value=Kurs_preview.innerHTML;
 }
 
 /* Проверка правильности ввода */
 continue_butt.addEventListener("click", but =>{
-    but.preventDefault();
     let corr_Edu_flag=false;
     let corr_Prog_flag=false;
     let corr_Facult_flag=false;
@@ -485,9 +570,10 @@ continue_butt.addEventListener("click", but =>{
     })
 
     if((corr_Edu_flag&&corr_Facult_flag&&corr_Prog_flag&&(Job.value!="")&&(kurs_chosen==true)&&(occup_chosen==true))){
-        window.location.href = "thirdpage.html";
+        alert("ye");
     }
     else{
+        but.preventDefault();
         continue_butt.style.cssText="background-color: rgb(109, 0, 181, 0.5); transition: 0.3s;";
         if (EduLevel.value==""){
             MakeRed_NoInp(EduLevel, Ed_ref);

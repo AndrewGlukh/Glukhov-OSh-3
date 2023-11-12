@@ -1,7 +1,14 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
+from . import models, serializers
 from .forms import FirstPageForm
 from .models import User_Data_First
+
+from rest_framework import status
+from rest_framework.views import APIView
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
 # Create your views here.
 def testingform(request):
@@ -21,21 +28,14 @@ def thirdpage(request):
 
 def get_firstform_HTML(request):
     if request.method == "POST":
-        Name = request.POST.get('Name')
-        profile_pic = request.FILES['file']
+        Name = request.POST.get('your_name')
+        profile_pic = request.FILES['profile_pic']
         gender = request.POST.get('gender')
         date = request.POST.get('Birth_date_inp')
         telega = request.POST.get('telegram')
         phone_num = request.POST.get('phone-num')
         O_sebe = request.POST.get('o-sebe')
-        print(Name)
-        print(gender)
-        print(date)
         date = date[6]+date[7]+date[8]+date[9]+"-"+date[3]+date[4]+"-"+date[0]+date[1]
-        print(date)
-        print(telega)
-        print(phone_num)
-        print(O_sebe)
         new_acc = User_Data_First.objects.create(
             profile_pic = profile_pic,
             your_name = Name,
@@ -78,3 +78,68 @@ def get_firstform(request):
 
 def acc_added(request):
     return render(request, 'myapp/acc_added.html')
+
+#Работа с API
+
+@api_view(['GET', 'POST'])
+def item_view(request):
+    if request.method == 'GET':
+        users_1 = models.User_Data_First.objects.all()
+        serializer = serializers.ItemSerializer1(users_1, many=True)
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        serializer = serializers.ItemSerializer1(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class ItemViewSet_1(ModelViewSet):
+    serializer_class = serializers.ItemSerializer1
+    queryset = models.User_Data_First.objects.all()
+
+class ItemAPIView_1(APIView):
+    serializer_class = serializers.ItemSerializer1
+    def get(self, request):
+        users_1 = models.User_Data_First.objects.all()
+        serializer = self.serializer_class(users_1, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+def Finish_User_Creation(request):
+    if request.method == "POST":
+        user=models.User_Data_First.objects.last()
+        idd=user.id
+        print(idd)
+        user.HSE_relation = request.POST.get('HSE_relation')
+        user.kurs = request.POST.get('kurs')
+        user.job = request.POST.get('job')
+
+        user.save()
+        return HttpResponseRedirect("/myapp/thirdpage")
+    else:
+        return HttpResponseRedirect("/myapp/testingform")
+    
+""" class ItemViewSet_2(ModelViewSet):
+    serializer_class = serializers.ItemSerializer2
+    queryset = models.User_Data_First.objects.all()
+
+class ItemAPIView_2(APIView):
+    serializer_class = serializers.ItemSerializer2
+    def get(self, request):
+        users_2 = models.User_Data_Second.objects.all()
+        serializer = self.serializer_class(users_2, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) """

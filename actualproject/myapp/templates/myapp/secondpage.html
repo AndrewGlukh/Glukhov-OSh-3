@@ -12,15 +12,17 @@
 <body style="font-family: 'Museo Sans Cyrl', Arial">
     <!-- Хэдер -->
     <header class="header">
+        <input type="hidden" id="Url" data-url="finish" />
         <a href="http://info.homeet.styleru.org/"><img src="{% static 'myapp/img/header image.png' %}" width="200" alt=""></a>
         <!-- Кнопка "выйти из аккаунта" -->
-        <a href="http://info.homeet.styleru.org/"> <button class="button" id="exitbut">Выйти из аккаунта</button> </a>
+        <a href="http://info.homeet.styleru.org/"> <button class="button" type="button" id="exitbut">Выйти из аккаунта</button> </a>
     </header>
 
     <main style="margin-left: 100px; position: relative;">
-         
+    <form action="finish" method="post" enctype="multipart/form-data" id="form2">
+        {% csrf_token %}
         <div style="padding-top: 150px;">
-            <a href="{% url 'firstpage' %}"><button class="button">Назад</button> </a>
+            <a href="firstpage"><button class="button" type="button">Назад</button> </a>
         </div>
         <br> 
         <!-- Линия прогресса  --> 
@@ -36,27 +38,27 @@
             <!-- Занятость -->
             <div class="radio" style="width:350px; height:30px; border-radius:5px; padding: 3px;">
                 <span style="position: relative;" id="Occ_ref"></span>
-                <label><input type="radio" name="stud/sotr" value="stud">Студент / выпускник<span style="margin-left: 0.5px;  margin-top: 1px; text-align: center;"> <span class="radio-select-dot"></span> </span></label>
-                <label style="margin-left: 10px;"><input type="radio" name="stud/sotr" value="sotr">Сотрудник<span style=" margin-top: 1px; text-align: center;"> <span class="radio-select-dot"></span> </span></label>
+                <label><input type="radio" name="HSE_relation" id="STUD" value="Студент / выпускник">Студент / выпускник<span style="margin-left: 0.5px;  margin-top: 1px; text-align: center;"> <span class="radio-select-dot"></span> </span></label>
+                <label style="margin-left: 10px;"><input type="radio" name="HSE_relation" id="SOTR" value="Сотрудник">Сотрудник<span style=" margin-top: 1px; text-align: center;"> <span class="radio-select-dot"></span> </span></label>
             </div>
             <!-- КУРС -->
             <div class="before-form-text">Курс</div><span style="position: relative;" id="Kurs_ref"></span>
             <div id="Kurs_box" style="background-color: #e7e7e7; width: fit-content; padding: 10px; border-radius:10px;">
-                <button class="kurs-button">1</button>
-                <button class="kurs-button">2</button>
-                <button class="kurs-button">3</button>
-                <button class="kurs-button">4</button>
-                <button class="kurs-button">5</button>
-                <button class="kurs-button">6</button>
+                <button class="kurs-button" type="button">1</button>
+                <button class="kurs-button" type="button">2</button>
+                <button class="kurs-button" type="button">3</button>
+                <button class="kurs-button" type="button">4</button>
+                <button class="kurs-button" type="button">5</button>
+                <button class="kurs-button" type="button">6</button>
             </div> <br>
-            <button class="no-kurs-but"></button><span style="margin-left: 10px;">Уже окончил Вышку</span>
+            <button class="no-kurs-but" type="button"></button><span style="margin-left: 10px;">Уже окончил Вышку</span>
 
             <!-- Ступень образования -->
             <div class="before-form-text" >Ступень образования</div>
             <span style="position:relative;" id="Ed_ref">
                 <img src="{% static 'myapp/img/list-arrow.png' %}" alt="" class="list-arrow" id="Edu_arrow">
             </span>
-            <div><input class="grey-form2" type="text" placeholder="Ступень образования" list="EduLevel" id="EduLevel" name="EduLevel">
+            <div><input name="EduLevel" class="grey-form2" type="text" placeholder="Ступень образования" list="EduLevel" id="EduLevel" name="EduLevel" autocomplete="off">
                 <datalist id="EduLevel" class="list-input">
                     <option class="option" value="Бакалавриат">Бакалавриат</option>
                     <option class="option" value="Магистратура">Магистратура</option>
@@ -68,12 +70,12 @@
             <span style="position:relative;" id="Fac_ref">
                 <img src="{% static 'myapp/img/list-arrow.png' %}" alt="" class="list-arrow" id="Facult_arrow">
             </span>
-            <div><input class="grey-form2" type="text" placeholder="Факультет" list="Facult" id="Facult">
+            <div><input name="Facult" class="grey-form2" type="text" placeholder="Факультет" list="Facult" id="Facult" autocomplete="off">
                 <datalist id="Facult" class="list-input">
-                    <option class="option" value="ФКН">Факультет Компьютерных Наук</option>
-                    <option class="option" value="ВШБ">Высшая Школа Бизнеса</option>
-                    <option class="option" value="ФП">Факультет права</option>
-                    <option class="option" value="ФД">Факультет дизайна</option>
+                    <option class="option" value="ФКН">ФКН</option>
+                    <option class="option" value="ВШБ">ВШБ</option>
+                    <option class="option" value="ФП">ФП</option>
+                    <option class="option" value="ФД">ФД</option>
                     <option class="option" value="МИЭМ">МИЭМ</option>
                 </datalist>
             </div>      
@@ -83,7 +85,7 @@
             <span style="position:relative;" id="Pr_ref">
                 <img src="{% static 'myapp/img/list-lense.png' %}" alt="" class="list-arrow">
             </span>
-            <div><input class="grey-form2" type="text" placeholder="Образовательная программа" id="Prog">
+            <div><input name="Prog" class="grey-form2" type="text" placeholder="Образовательная программа" id="Prog" autocomplete="off">
                 <datalist id="Prog" class="list-input">
                     <option class="option" value="ИТСС">ИТСС</option>
                     <option class="option" value="ИБ">ИБ</option>
@@ -93,7 +95,7 @@
                 </datalist>
             </div> <br>
 
-            <div><span id="Job_ref" style="position: relative;"></span><input class="grey-form2" type="text" placeholder="Работа" id="Job"></div>
+            <div><span id="Job_ref" style="position: relative;"></span><input name="job" class="grey-form2" type="text" placeholder="Работа" id="Job" autocomplete="off"></div>
         </section>
 
      <!-- Окошки справа -->
@@ -101,16 +103,27 @@
             <div style="font-size: 12; color: rgb(53, 53, 53);">Так будет выглядеть твоя будущая страница</div> <br>
             <div class="account-preview">
                 <div style="height: 1px;"></div>
+
                 <div class="photo-preview"></div>
+
                 <button class="input-file-btn" style="margin: 21px; background-color:rgb(109, 0, 181, 0.5); border:0px;">Показать контакты</button>
                 <div style="position:absolute; top:21px; left: 210px; font-size: 20;">
-                    <div style="margin-bottom: 5px;"><b>Иван Иванов</b></div>
+
+                    <div id="Name_preview"><b>Иван Иванов</b></div>
+
                     <div style="font-size: 12px; color:rgb(18, 18, 18); position: relative;">
+
                         <span style="margin-right: 5px;" id="gender-preview">Пол</span><span class="dividor">oo</span>
                         <span style="margin-right: 5px; margin-left: 8px;" id="age-preview">Возраст</span><span class="dividor">oo</span>
+
                         <span style="margin-left: 8px;" id="kurs-preview">Курс</span></div>
                         <div class="job-preview">Работа</div>
-                        <div style="margin-top: 10px; margin-bottom: 10px; font-size: 11px; color:rgb(65, 65, 65);">Мне очень нравится...</div>
+
+                        <span id="extend_o_sebe_but">Развернуть <img src="{% static 'myapp/img/list-arrow.png' %}" class="Extend_arr"></span>
+                        <div class="o-sebe-preview">
+                            Мне очень нравится...
+                        </div>
+
                         <div><img height="115" src="{% static 'myapp/img/right-windows.png' %}" alt="окошки" style="margin-left: -10px;"></div>
                     </div>
             </div> <br>
@@ -123,12 +136,11 @@
                 </div>
             </div>
 
-            <a href="{% url 'thirdpage' %}"><button class="input-file-btn" id="continue-butt">
-                Продолжить
-            </button></a>
+            <input type="text" style="display: none;" name="kurs" id="Kurs-full"> <!-- ДЛЯ ФОРМЫ, БЕРЕТ VALUE У kurs-preview -->
+            <input type="submit" value="Продолжить" class="input-file-btn" id="continue-butt">
         </section>
+    </form>
     </main>
-    
 
     <!-- Футер и линия у него -->
     <br><br><br><br><br><br><br><br><br><br><br><br><br><br>

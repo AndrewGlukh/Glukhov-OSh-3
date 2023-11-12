@@ -1,5 +1,5 @@
-const Photo_input = document.querySelector("#photo_input");
-const Name_input = document.querySelector("#Name");
+const Photo_input = document.querySelector("#profile_pic");
+const Name_input = document.querySelector("#your_name");
 
 const Female_radio = document.querySelector("#Female_radio");
 const Male_radio = document.querySelector("#Male_radio");
@@ -468,6 +468,7 @@ Photo_input.onchange = function() {
     Photo_preview.style.cssText = "background:url(" + url + ") no-repeat;background-size: contain; background-position: center center; border:0px;";
     Photo_ref.style.cssText="background-color:white; border: dashed 3px rgb(207, 207, 207); transition:0.3s;";
     Under_photo_text.style.cssText="color:rgb(174, 174, 174); transition: 0.3s;";
+    localStorage.setItem('picture', url);
     check_Continue_Button();
 }
 
@@ -573,9 +574,7 @@ Phone_input.addEventListener("change", e=>{
 
 continue_butt.addEventListener("click", but=>{
 
-    alert(1);
     if(!(Photo_chosen&&gender_chosen&&Name_correct&&Telegram_correct&&Phone_correct&&Date_correct&&(O_sebe_textbox.value!=""))){
-        alert(2);
         but.preventDefault();
         continue_butt.style.cssText="background-color: rgb(109, 0, 181, 0.5); transition: 0.3s;";
 
@@ -747,6 +746,10 @@ continue_butt.addEventListener("click", but=>{
             })
         }
     }
+    else{
+        but.preventDefault();
+        postData();
+    }
 })
 
 /* "Развернуть" в превью аккаунта  */
@@ -768,3 +771,29 @@ Extend_o_sebe_but.addEventListener("click", but =>{
         arrow_upside_down=true;
     }
 })
+
+// Function to post data
+function postData() {
+    date=Birth_input.value;
+    Birth_input.value=date[6]+date[7]+date[8]+date[9]+"-"+date[3]+date[4]+"-"+date[0]+date[1];
+    const form1 = new FormData(document.getElementById("form1"));
+    fetch('/myapp/api/users/', {
+        method: 'POST',
+        body: form1
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data)
+        alert('Item saved successfully!');
+        window.location.href = "secondpage";
+    })
+    .catch(error => {
+        if (response.status === 400) {
+            for (const field in data.errors) {
+                const errorField = document.getElementById(`${field}Error`);
+                errorField.textContent = data.errors[field];
+            }
+        }
+        console.error('Error:', error);
+    });
+}
