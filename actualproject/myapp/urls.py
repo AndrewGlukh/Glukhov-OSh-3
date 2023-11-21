@@ -21,20 +21,17 @@ from . import views
 app_name = 'my_app'
 router = DefaultRouter()
 router.register('users', views.ItemViewSet_1, basename="item-viewset")
+router.register('files', views.ItemViewSet_Files, basename="files-viewset")
 
 urlpatterns = [
-    path('testingform', views.testingform, name='index'),
-    path('firstpage', views.index, name='firstpage'),
+    path('firstpage', views.firstpage, name='firstpage'),
     path('secondpage', views.secondpage, name="secondpage"),
-    path('secondpage.html', views.secondpage, name="secondpage"),
     path('thirdpage', views.thirdpage, name="thirdpage"),
-    path('thirdpage.html', views.thirdpage, name="thirdpage"),
-    path('get_firstform', views.get_firstform, name="get_firstform"),
-    path('get_firstform_HTML', views.get_firstform_HTML, name='get_firstform_HTML'),
-    path('acc_added', views.acc_added, name="acc_added"),
-    path('finish', views.Finish_User_Creation, name='finish'),
+
+    path('post_Files', views.post_Files, name='post_Files'),
 
     path('users/', views.ItemAPIView_1.as_view(), name='user-view'),
+    path('files/', views.ItemAPIView_Files.as_view(), name='file-view')
 ]
 
 urlpatterns += [path(r'api/', include(router.urls))]

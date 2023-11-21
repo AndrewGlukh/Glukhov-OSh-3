@@ -19,8 +19,6 @@
     </header>
 
     <main style="margin-left: 100px; position: relative;">
-    <form action="finish" method="post" enctype="multipart/form-data" id="form2">
-        {% csrf_token %}
         <div style="padding-top: 150px;">
             <a href="firstpage"><button class="button" type="button">Назад</button> </a>
         </div>
@@ -39,7 +37,7 @@
             <div class="radio" style="width:350px; height:30px; border-radius:5px; padding: 3px;">
                 <span style="position: relative;" id="Occ_ref"></span>
                 <label><input type="radio" name="HSE_relation" id="STUD" value="Студент / выпускник">Студент / выпускник<span style="margin-left: 0.5px;  margin-top: 1px; text-align: center;"> <span class="radio-select-dot"></span> </span></label>
-                <label style="margin-left: 10px;"><input type="radio" name="HSE_relation" id="SOTR" value="Сотрудник">Сотрудник<span style=" margin-top: 1px; text-align: center;"> <span class="radio-select-dot"></span> </span></label>
+                <label style="margin-left: 10px;"><input type="radio" name="HSE_relation" id="SOTR" value="Сотрудник">Сотрудник<span style="margin-left: 0.5px; margin-top: 1px; text-align: center;"> <span class="radio-select-dot"></span> </span></label>
             </div>
             <!-- КУРС -->
             <div class="before-form-text">Курс</div><span style="position: relative;" id="Kurs_ref"></span>
@@ -94,9 +92,21 @@
                     <option class="option" value="ПИ">ПИ</option>
                 </datalist>
             </div> <br>
-
-            <div><span id="Job_ref" style="position: relative;"></span><input name="job" class="grey-form2" type="text" placeholder="Работа" id="Job" autocomplete="off"></div>
         </section>
+    <form action="finish" method="post" enctype="multipart/form-data" id="form2">
+        {% csrf_token %}
+        <!-- Данные из первой формы для postData (+ HSE_Relation, т. к. если брать сверху, fetch отправляет лишнее)-->
+        <input type="text" style="display: none;" name="your_name" id="your_name">
+        <input type="text" style="display: none;" name="gender" id="gender">
+        <input type="text" style="display: none;" name="birth_date" id="birth_date">
+        <input type="text" style="display: none;" name="telega" id="telega">
+        <input type="tel" style="display: none;" name="phone_num" id="phone_num">
+        <input type="text" style="display: none;" name="O_sebe" id="O_sebe">
+        <input type="text" style="display: none;" name="HSE_relation" id="HSE_relation">
+
+        <input type="text" style="display: none;" name="kurs" id="kurs"> <!-- ДЛЯ ФОРМЫ, БЕРЕТ VALUE У kurs-preview -->
+
+        <div><span id="Job_ref" style="position: relative;"></span><input name="job" class="grey-form2" type="text" placeholder="Работа" id="job" autocomplete="off"></div>
 
      <!-- Окошки справа -->
         <section style="position: absolute; left: 505px; top: 300px;">
@@ -135,8 +145,7 @@
                     <div style="position: absolute; right:30px; top: 20px; height: 10px;"><img src="{% static 'myapp/img/happy-smile.png' %}" alt="sad" height="40px"></div>
                 </div>
             </div>
-
-            <input type="text" style="display: none;" name="kurs" id="Kurs-full"> <!-- ДЛЯ ФОРМЫ, БЕРЕТ VALUE У kurs-preview -->
+            
             <input type="submit" value="Продолжить" class="input-file-btn" id="continue-butt">
         </section>
     </form>

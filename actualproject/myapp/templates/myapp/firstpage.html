@@ -19,10 +19,9 @@
     </header>
 
     <main style="margin-left: 100px; position: relative;">
-    
-    <form action="get_firstform_HTML" method="post" enctype="multipart/form-data" id="form1">
-        {% csrf_token %}
 
+    <form action="post_Files" method="post" enctype="multipart/form-data" id="form1">
+        {% csrf_token %}
         <div style="padding-top: 150px;">
             <a href="http://info.homeet.styleru.org/"> <button class="button">На главную</button> </a>
         </div>
@@ -39,7 +38,7 @@
         </div>
         <br><br>
         <section>
-            <!-- Ввод фото -->
+        <!-- Ввод фото -->
             <div class="photo-box">
                     <br><br>
                     <div><b>Аватар профиля</b></div>
@@ -52,6 +51,7 @@
                      <span class="input-file-text">Загрузите фотографию весом не более 10мб</span>
             </div>
             <br><br>
+
             <!-- Все прочие вводы -->
             <div id="Name_ref" style="position: relative;"><label for="your_name" class="form-label">Имя и фамилия</label>
             <input class="grey-form" type="text" name="your_name" id="your_name" placeholder="Иван Иванов"></div>
@@ -69,7 +69,7 @@
             <div id="Teleg_ref" style="position: relative;"><input class="grey-form" type="text" name="telega" id="telegram" placeholder="Телеграм"></div> <br>
 
             <div id="Phone_ref" style="position: relative;"><label class="form-label" for="phone_num">Номер телефона</label>
-                <input class="grey-form" type="tel" name="phone_num" id="phone-num" placeholder="+7...">
+                <input class="grey-form" maxlength="12" type="tel" name="phone_num" id="phone-num" placeholder="+7...">
             </div> <br>
 
             <div id="O_sebe_ref" style="position: relative;"><label class="form-label" for="O_sebe">О себе</label>
@@ -78,7 +78,9 @@
 
             <div style="font-size: 10; color: rgb(174, 174, 174);">Например: люблю хтмл</div>
         </section>
+
         <!-- Окошки справа -->
+
         <section style="position: absolute; left: 505px; top: 300px;">
             <div style="font-size: 12; color: rgb(53, 53, 53);">Так будет выглядеть твоя будущая страница</div> <br>
             <div class="account-preview">
@@ -118,11 +120,11 @@
                 </div>
             </div>
 
-
             <input type="submit" value="Продолжить" class="input-file-btn" id="continue-butt">
+        </form>
         </section>
+
         
-    </form>
     </main>
 
     <br><br><br><br><br><br><br><br><br>

@@ -1,5 +1,7 @@
 const occup_radio = document.querySelector(".radio");
 const occup_dots = document.querySelectorAll(".radio-select-dot");
+const HSE_relation = document.querySelector("#HSE_relation");
+
 const Kurs_box = document.querySelector("#Kurs_box");
 const kurs_btns = document.querySelectorAll('.kurs-button');
 const no_kurs = document.querySelector(".no-kurs-but");
@@ -9,7 +11,7 @@ const Kurs_ref = document.querySelector("#Kurs_ref");
 const EduLevel = document.querySelector("#EduLevel");
 const Facult = document.querySelector("#Facult");
 const Prog = document.querySelector("#Prog");
-const Job = document.querySelector("#Job");
+const Job = document.querySelector("#job");
 const Ed_ref = document.querySelector("#Ed_ref");
 const Fac_ref = document.querySelector("#Fac_ref");
 const Pr_ref = document.querySelector("#Pr_ref");
@@ -23,17 +25,26 @@ const Facult_arrow = document.querySelector("#Facult_arrow");
 const continue_butt = document.querySelector("#continue-butt");
 
 const Kurs_preview = document.querySelector("#kurs-preview");
-const Kurs_full = document.querySelector("#Kurs-full")
+const Kurs_full = document.querySelector("#kurs");
 const Job_preview = document.querySelector(".job-preview");
 
 let kurs_chosen = false;
 let which_kurs = -1;
+let HSE_finished= false;
 let occup_chosen = false;
 let correct_Edu = ["Основное общее","Среднее общее","Среднее профессиональное","Бакалавриат","Магистратура"]; 
 let correct_Facult = ["ФКН", "ВШБ","ФП","ФД", "МИЭМ"];
 let correct_Prog = ["ИТСС","ИБ","ИВТ","ЭБ","ПИ"];
 
-/* Ввод данных с прошлой страницы в окошки */
+/* Инпуты и части превью с данными прошлой страницы */
+const Name = document.querySelector("#your_name");
+const Gender = document.querySelector("#gender");
+const Birth_date = document.querySelector("#birth_date");
+const Telega = document.querySelector("#telega");
+const Phone = document.querySelector("#phone_num");
+const O_sebe = document.querySelector("#O_sebe");
+/* const Photo = document.querySelector('#profile_pic'); */
+
 const account_preview = document.querySelector(".account-preview");
 const Extend_o_sebe_but = document.querySelector("#extend_o_sebe_but");
 const Extend_arrow = document.querySelector(".Extend_arr");
@@ -45,6 +56,8 @@ const O_sebe_preview = document.querySelector(".o-sebe-preview");
 let arrow_upside_down=false;
 const currentDate = new Date();
 
+
+
 function calculateAge (birthDate) {
     birthDate = new Date(birthDate);
     var years = (currentDate.getFullYear() - birthDate.getFullYear());
@@ -55,64 +68,37 @@ function calculateAge (birthDate) {
     return years;
 }
 
-/* async function fetchBlob(url) {
-    const response = await fetch(url);
-    return response.blob();
+try{
+    x=localStorage.getItem('reset_flag');
+    if (x){
+        localStorage.clear();
+    }
 }
-const [imageSourceUrl, setImageSourceUrl] = useState("");
-const downloadImageAndSetSource = async (imageUrl) => {
-    image = await fetchBlob(imageUrl);
-    setImageSourceUrl(URL.createObjectURL(image));
-} */
+catch{}
 
-/* fetch('/myapp/api/users/')
-.then(response => response.blob())
-.then(blob=>{
-    alert(0);
-    alert(blob);
-    console.log(blob);
-    blob.slice()
-    const imageUrl = URL.createObjectURL(blob);
-    alert(imageUrl);
-    Photo_preview.style.cssText = "background:url(" + imageUrl + ") no-repeat;background-size: contain; background-position: center center; border:0px;";
-})
-.catch(error => {
-    console.error('Error:', error);
-}); */
+try{/* Заполнение превью */
+imageUrl=localStorage.getItem('picture');
+Photo_preview.style.cssText = "background:url(" + imageUrl + ") no-repeat;background-size: contain; background-position: center center; border:0px;";
+Name_preview.innerHTML=localStorage.getItem('name');
+Gender_preview.innerHTML=localStorage.getItem('gender');
+Age_preview.innerHTML=localStorage.getItem('age');
+O_sebe_preview.innerHTML=localStorage.getItem('o_sebe');
 
-fetch('/myapp/api/users/')
-.then(response => response.json())
-.then(data => {
-    d=data.at(-1)
-    imageUrl=localStorage.getItem('picture');
-    Photo_preview.style.cssText = "background:url(" + imageUrl + ") no-repeat;background-size: contain; background-position: center center; border:0px;";
-    Name_preview.innerHTML=d.your_name;
-    Gender_preview.innerHTML=d.gender;
-    Age_preview.innerHTML=calculateAge(d.birth_date);
-    O_sebe_preview.innerHTML=d.O_sebe;
-})
-.catch(error => {
-    console.error('Error:', error);
-});
-
-function App() {
-    const fetchURL = '/myapp/api/users/';
-    const [imageSource, setImageSource] = useState('');
-  
-    useEffect(() => {
-      // Fetch the image as a blob
-      fetch(fetchURL)
-        .then(response => response.blob())
-        .then(imageBlob => {
-          // Create an object URL for the image blob
-          const imageUrl = URL.createObjectURL(imageBlob);
-          setImageSource(imageUrl);
-        });
-    }, [fetchURL]);
-    Photo_preview.style.cssText = "background:"+ imageSource +") no-repeat;background-size: contain; background-position: center center; border:0px;";
-  }
-
-
+/* Заполнение скрытых инпутов для формы */
+Name.value=localStorage.getItem('name');
+Gender.value=localStorage.getItem('gender');
+date=localStorage.getItem('birth_date');
+Birth_date.value=date[6]+date[7]+date[8]+date[9]+"-"+date[3]+date[4]+"-"+date[0]+date[1];
+Telega.value=localStorage.getItem('telega');
+Phone.value=localStorage.getItem('phone_num');
+O_sebe.value=localStorage.getItem('o_sebe');}
+catch{
+    alert("Первая страница не была заполнена");
+    Name_preview.innerHTML="Иван Иванов";
+    Gender_preview.innerHTML="Пол";
+    Age_preview.innerHTML="Возраст";
+    O_sebe_preview.innerHTML="Мне очень нравится...";
+}
 /* "Развернуть" в превью аккаунта  */
 Extend_o_sebe_but.addEventListener("click", but =>{
     if (arrow_upside_down){
@@ -143,6 +129,7 @@ occup_radio.addEventListener("click", note => {
     occup_dots.forEach(dot =>{
         dot.style.cssText="background-color: white; transition:0.3s";
     })
+    HSE_relation.value=note.target.value;
 })
 
 /* измен. при наведении и нажатии курса */
@@ -173,6 +160,7 @@ kurs_btns.forEach(btn => {
             continue_butt.style.cssText="background-color: rgb(109, 0, 181, 0.5); transition: 0.3s;";
         }
         Check_Education_Info_Fill_Preview(btn);
+        HSE_finished=false;
 	})
 })
 no_kurs.addEventListener("click", (e) => {
@@ -190,6 +178,7 @@ no_kurs.addEventListener("click", (e) => {
         continue_butt.style.cssText="background-color: rgb(109, 0, 181, 0.5); transition: 0.3s;";
     }
     Kurs_preview.innerHTML="Закончил Вышку";
+    HSE_finished=true;
 })
 
 /* проверка выбора Студент/выпуск... */
@@ -569,30 +558,36 @@ continue_butt.addEventListener("click", but =>{
         }
     })
 
-    if((corr_Edu_flag&&corr_Facult_flag&&corr_Prog_flag&&(Job.value!="")&&(kurs_chosen==true)&&(occup_chosen==true))){
-        alert("ye");
+    if((corr_Edu_flag&&corr_Facult_flag&&corr_Prog_flag&&(Job.value!="")&&(kurs_chosen==true)&&(occup_chosen==true))||(HSE_finished&&(Job.value!="")&&kurs_chosen&&occup_chosen)){
+        but.preventDefault();
+        if(Gender_preview.innerHTML=="Пол"){
+            alert("Первая страница не была заполнена");
+        }
+        else{
+            postData();
+        }
     }
     else{
         but.preventDefault();
         continue_butt.style.cssText="background-color: rgb(109, 0, 181, 0.5); transition: 0.3s;";
-        if (EduLevel.value==""){
+        if ((EduLevel.value=="")&&(HSE_finished==false)){
             MakeRed_NoInp(EduLevel, Ed_ref);
         }
-        else if (corr_Edu_flag==false){
+        else if ((corr_Edu_flag==false)&&(HSE_finished==false)){
             MakeRed_WrongInp(EduLevel, Ed_ref);
         }
 
-        if (Facult.value==""){
+        if ((Facult.value=="")&&(HSE_finished==false)){
             MakeRed_NoInp(Facult, Fac_ref);
         }
-        else if (corr_Facult_flag==false){
+        else if ((corr_Facult_flag==false)&&(HSE_finished==false)){
             MakeRed_WrongInp(Facult, Fac_ref);
         }
 
-        if (Prog.value==""){
+        if ((Prog.value=="")&&(HSE_finished==false)){
             MakeRed_NoInp(Prog, Pr_ref);
         }
-        else if (corr_Prog_flag==false){
+        else if ((corr_Prog_flag==false)&&(HSE_finished==false)){
             MakeRed_WrongInp(Prog, Pr_ref);
         }
 
@@ -610,3 +605,28 @@ continue_butt.addEventListener("click", but =>{
         }
     }
 })
+
+function postData() {
+    const form2 = new FormData(document.getElementById("form2"));
+    for (var pair of form2.entries()) {
+    }
+    fetch('/myapp/api/users/', {
+        method: 'POST',
+        body: form2
+    })
+    .then(response => response.json())
+    .then(data => {
+        localStorage.setItem("reset_flag", true);
+        alert('User data saved successfully!');
+        window.location.href = "thirdpage";
+    })
+    .catch(error => {
+        if (response.status === 400) {
+            for (const field in data.errors) {
+                const errorField = document.getElementById(`${field}Error`);
+                errorField.textContent = data.errors[field];
+            }
+        }
+        console.error('Error:', error);
+    });
+}

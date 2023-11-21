@@ -40,8 +40,18 @@ let gender_chosen = false;
 let Name_correct = false;
 let Telegram_correct = false;
 let Phone_correct = false;
+let Phone_unique=false;
+let is_current=false;
 let Date_correct = false;
 let Photo_chosen = false;
+
+try{
+    x=localStorage.getItem('reset_flag');
+    if (x){
+        localStorage.clear();
+    }
+}
+catch{}
 
 function check_Continue_Button(){
     if (Photo_chosen&&gender_chosen&&(Name_input.value!="")&&(Telegram_input.value!="")&&(Phone_input.value!="")&&(Birth_input.value!="")&&(O_sebe_textbox.value!="")){
@@ -569,12 +579,39 @@ Phone_input.addEventListener("change", e=>{
     else{
         Phone_correct=false;
     }
+
+    /* Проверка на уникальность + правильный формат */
+    if (Phone_correct){
+        if(phone_chars[0]=="8"){
+            Phone_input.value="+7"+Phone_input.value.slice(1,12);
+        }
+
+        Phone_unique=true;
+        try{
+            potential_current_number=localStorage.getItem('phone_num');
+            if(potential_current_number==Phone_input.value){
+                is_current=true;
+            }
+            else{is_current=false;}
+
+        }catch{}
+        fetch('/myapp/api/files/')
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(entry =>{
+                if ((entry.phone_num==Phone_input.value)&&(is_current==false)){
+                    Phone_unique=false;
+                }
+            })
+        })
+    }
+
     check_Continue_Button();
 })
 
 continue_butt.addEventListener("click", but=>{
 
-    if(!(Photo_chosen&&gender_chosen&&Name_correct&&Telegram_correct&&Phone_correct&&Date_correct&&(O_sebe_textbox.value!=""))){
+    if(!(Photo_chosen&&gender_chosen&&Name_correct&&Telegram_correct&&Phone_correct&&Phone_unique&&Date_correct&&(O_sebe_textbox.value!=""))){
         but.preventDefault();
         continue_butt.style.cssText="background-color: rgb(109, 0, 181, 0.5); transition: 0.3s;";
 
@@ -684,12 +721,25 @@ continue_butt.addEventListener("click", but=>{
                 Phone_input.removeEventListener("change", to_del);
             })
         }
+        else if((Phone_unique==false)){
+            Phone_input.style.cssText="border:solid 2px red; background-color: rgb(196, 126, 126, 0.5); transition: 0.3s; margin-bottom:10px;";
+            const notice = document.createElement("span");
+            notice.innerHTML = `
+            <span style="position: absolute; left:240px; top:50px; color:red; width:200px; transition: 0.3s;">
+                Номер уже в базе данных
+            </span>`;                    
+            Phone_ref.appendChild(notice);
+            Phone_input.addEventListener("change", to_del =>{
+                try{notice.parentNode.removeChild(notice);}catch{}
+                Phone_input.removeEventListener("change", to_del);
+            })
+        }
 
         if(Birth_input.value==""){
             Birth_input.style.cssText="border:solid 2px red; background-color: rgb(196, 126, 126, 0.5); transition: 0.3s;margin-bottom:10px; width: 230px;";
             const notice = document.createElement("span");
             notice.innerHTML = `
-            <span style="position: absolute; left:100px; top:50px; color:red; width:200px; transition: 0.3s;">
+            <span style="position: absolute; left:100px; top:43px; color:red; width:200px; transition: 0.3s;">
                 Обязательное поле
             </span>`;
             Birth_ref.appendChild(notice);
@@ -710,7 +760,7 @@ continue_butt.addEventListener("click", but=>{
             Birth_input.style.cssText="border:solid 2px red; background-color: rgb(196, 126, 126, 0.5); transition: 0.3s; margin-bottom:10px; width: 230px;";
             const notice = document.createElement("span");
             notice.innerHTML = `
-            <span style="position: absolute; left:85px; top:50px; color:red; width:200px; transition: 0.3s;">
+            <span style="position: absolute; left:85px; top:43px; color:red; width:200px; transition: 0.3s;">
                 Неправильный формат
             </span>`;                    
             Birth_ref.appendChild(notice);
@@ -747,8 +797,21 @@ continue_butt.addEventListener("click", but=>{
         }
     }
     else{
-        but.preventDefault();
-        postData();
+        /* but.preventDefault(); */
+        /* Сохранение данных */
+        localStorage.setItem('name', Name_input.value);
+        localStorage.setItem('age', Age_preview.innerHTML);
+        localStorage.setItem('gender', Gender_preview.innerHTML);
+        localStorage.setItem('birth_date', Birth_input.value);
+        localStorage.setItem('telega', Telegram_input.value);
+        localStorage.setItem('phone_num', Phone_input.value);
+        localStorage.setItem('o_sebe', O_sebe_textbox.value);
+
+        if(is_current){
+            Telegram_input.value="remove element";
+        }
+        /* postData_Files();
+        window.location.href = "secondpage"; */
     }
 })
 
@@ -772,18 +835,30 @@ Extend_o_sebe_but.addEventListener("click", but =>{
     }
 })
 
-// Function to post data
-function postData() {
-    date=Birth_input.value;
-    Birth_input.value=date[6]+date[7]+date[8]+date[9]+"-"+date[3]+date[4]+"-"+date[0]+date[1];
+
+/* Попытка сделать files через fetch (неудачная) */
+/* function postData_Files() {
     const form1 = new FormData(document.getElementById("form1"));
-    fetch('/myapp/api/users/', {
+    form1.delete("your_name");
+    form1.delete("gender");
+    form1.delete("birth_date");
+    form1.delete("telega");
+    alert("Данные:");
+    for (var pair of form1.entries()) {
+        alert(pair[0]+ ', ' + pair[1]); 
+    }
+    fetch('/myapp/api/files/', {
         method: 'POST',
         body: form1
     })
-    .then(response => response.json())
+    .then(response => {
+        if (response.ok()){
+            response.json()
+        }
+        throw new Error('Error :(')
+    })
     .then(data => {
-        console.log(data)
+        alert(data);
         alert('Item saved successfully!');
         window.location.href = "secondpage";
     })
@@ -796,4 +871,4 @@ function postData() {
         }
         console.error('Error:', error);
     });
-}
+} */
